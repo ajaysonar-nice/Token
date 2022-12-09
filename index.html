@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script>
+  
+	function copyToken(){
+		navigator.clipboard.writeText(tokenResponce.access_token);
+		document.getElementById('lbl').append('Copied !');
+	}
+	
+	var tokenResponce; 
+  
+	var http = new XMLHttpRequest();
+	var url = 'https://api-do79.dev.nice-incontact.com/InContactAuthorizationServer/Token';
+	var params = 'GRANT_TYPE=PASSWORD&USERNAME=AJAY.SONAR@do79.COM&password=Nokia@5131';
+	http.open('POST', url, true);
+
+	//Send the proper header information along with the request
+	http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	http.setRequestHeader('Authorization','Basic aW50ZXJuYWxAaW5Db250YWN0IEluYy46UVVFNVFrTkdSRE0zUWpFME5FUkRSamczUlVORFJVTkRRakU0TlRrek5UYz0=');
+	http.onreadystatechange = function() {//Call a function when the state changes.
+		if(http.readyState == 4 && http.status == 200) {
+			tokenResponce = JSON.parse(http.responseText);
+			var div = document.getElementById('dvToken');
+			div.append(tokenResponce.access_token);
+			console.log(http.responseText);
+			document.getElementById('btnCopy').style.display = "block";
+		}
+	}
+	http.send(params);
+  </script>
+  <style>
+    
+  </style>
+</head>
+
+<body>
+
+	<div id="dvToken"></div>
+	<br/>
+	<button id="btnCopy" style="display:none;margin: 15px;padding: 15px;width: 200px" onclick="copyToken()" value="Copy">Copy</button>
+	<label id="lbl" style="color:green; margin: 15px"></label>
+</body>
+
+</html>
